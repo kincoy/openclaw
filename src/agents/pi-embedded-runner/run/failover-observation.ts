@@ -1,7 +1,7 @@
 import type { AuthProfileFailureReason } from "../../auth-profiles.js";
 import { buildApiErrorObservationFields } from "../../pi-embedded-error-observation.js";
 import type { FailoverReason } from "../../pi-embedded-helpers.js";
-import { failoverLog } from "../logger.js";
+import { log } from "../logger.js";
 
 export type FailoverDecisionObservation = {
   stage: "prompt" | "assistant";
@@ -31,7 +31,7 @@ export function createFailoverDecisionLogger(
   const reasonText = base.failoverReason ?? "none";
   return (decision, extra) => {
     const observedError = buildApiErrorObservationFields(base.rawError);
-    failoverLog.warn("embedded run failover decision", {
+    log.warn("embedded run failover decision", {
       event: "embedded_run_failover_decision",
       tags: ["error_handling", "failover", base.stage, decision],
       runId: base.runId,

@@ -39,7 +39,7 @@ export function handleAgentEnd(ctx: EmbeddedPiSubscribeContext) {
     });
     const rawError = lastAssistant.errorMessage?.trim();
     const failoverReason = classifyFailoverReason(rawError ?? "");
-    const errorText = (friendlyError || rawError || "LLM request failed.").trim();
+    const errorText = (friendlyError || lastAssistant.errorMessage || "LLM request failed.").trim();
     const observedError = buildApiErrorObservationFields(rawError);
     ctx.log.warn("embedded run agent end", {
       event: "embedded_run_agent_end",
