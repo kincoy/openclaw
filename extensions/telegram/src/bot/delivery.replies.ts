@@ -632,11 +632,14 @@ export async function deliverReplies(params: {
 
     try {
       const deliveredCountBeforeReply = progress.deliveredCount;
+      const explicitReplyToId = resolveTelegramReplyId(reply.replyToId);
       const replyToId =
         params.replyToMode === "off"
           ? undefined
-          : (resolveTelegramReplyId(reply.replyToId) ??
-            (params.replyToMode !== "all" || reply.replyToCurrent === false
+          : (explicitReplyToId ??
+            (params.replyToMode !== "all" ||
+            reply.replyToCurrent === false ||
+            (reply.replyToId != null && reply.replyToId.length > 0)
               ? undefined
               : params.defaultReplyToId));
       const telegramData = reply.channelData?.telegram as TelegramReplyChannelData | undefined;
